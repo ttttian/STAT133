@@ -51,6 +51,7 @@
 # the hw3 directory in the file WR1500MeterMen.rda.
 
 # load the data
+load('WR1500MeterMen.rda')
 
 # The name of the object loaded is wr1500m
 # The time (in the column "times") in these data are recorded in seconds, 
@@ -59,18 +60,19 @@
 
 # Q1a. How many world records does this data frame contain?
 
-# n.wr <- your code here
+n.wr <- nrow(wr1500m)
 
 # Q1b. Use R commands to find out who currently holds the world
 # record in the men's 1500 meter.
  
-# wr.name <- your code here
-
+wr.name <- levels(droplevels(wr1500m[wr1500m$year == max(wr1500m$year), ]$athlete))
 
 # Let's look at the relationship between date and time.
 # Q1c. What type of variable (numeric (continuous or discrete), nominal ordinal)
 # are year and times? (no need to save the output, just look at it)
 
+typeof(wr1500m$year)
+typeof(wr1500m$times)
 
 # When we are examining a variable to see how it changes in time,
 # we typically make a line plot, with time on the x-axes and 
@@ -82,11 +84,9 @@
 # But do add 180 to the times so that they are accurate measurements in seconds,
 # store that in a new variable and add to the data frame.
 
-# times_sec <- your code here
-# wr1500m <- your code here
-# plot( your code here )
-
-
+times_sec <- wr1500m$times + 180
+wr1500m <- data.frame(wr1500m, times_sec = times_sec)
+plot(wr1500m$year, wr1500m$times_sec, type = "l")
 
 # Q2b. Redo the plot using a date that incorporates the month as 
 # well as the year. For example, in Sep 1904 the world record 
@@ -96,11 +96,12 @@
 # first find and set all missing months to 0.5
 # Add new_year to the dataframe.
 
-# your code here
-# new_year <- your code here
-# wr1500m <- your code here
-# plot( your code here )
-
+new_month <- wr1500m$month
+new_month[is.na(new_month)] <- 6
+new_month <- new_month / 12
+new_year <- wr1500m$year + new_month
+wr1500m <- data.frame(wr1500m, new_year = new_year)
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l")
 
 # Q3. The current world record was set in 1998. If we want to
 # show that this record still stands in 2014, we could add a 
@@ -110,10 +111,9 @@
 # so that 2014 is included in the x-axis scale;
 # then use the lines() function to add the additional segment.
 
-# wr_1998 <- your code here
-# plot( your code here )
-# lines( your code here )
-
+wr_1998 <- wr1500m[wr1500m$year == 1998, ]$times_sec
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l", xlim = c(1892, 2014.5))
+lines(c(wr1500m[wr1500m$year == 1998, ]$new_year, 2014.5), c(wr_1998, wr_1998))
 
 # Q4. There are two times where the record stood for several
 # years - in 1944 and 1998. Let's make it easier to see these
