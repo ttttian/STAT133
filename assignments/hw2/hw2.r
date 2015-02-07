@@ -111,9 +111,10 @@ plot(wr1500m$new_year, wr1500m$times_sec, type = "l")
 # so that 2014 is included in the x-axis scale;
 # then use the lines() function to add the additional segment.
 
+new_year.1998 = wr1500m[wr1500m$year == 1998, ]$new_year
 wr_1998 <- wr1500m[wr1500m$year == 1998, ]$times_sec
-plot(wr1500m$new_year, wr1500m$times_sec, type = "l", xlim = c(1892, 2014.5))
-lines(c(wr1500m[wr1500m$year == 1998, ]$new_year, 2014.5), c(wr_1998, wr_1998))
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l", xlim = c(1892, 2030))
+lines(c(new_year.1998, 2014.5), c(wr_1998, wr_1998))
 
 # Q4. There are two times where the record stood for several
 # years - in 1944 and 1998. Let's make it easier to see these
@@ -127,18 +128,26 @@ lines(c(wr1500m[wr1500m$year == 1998, ]$new_year, 2014.5), c(wr_1998, wr_1998))
 # Also, do not type in the athlete's name. Instead, use subsetting
 # of wr1500m$athlete to access it.
 
-# wr_1944 <- your code here
-# abline( your code here )
-# abline( your code here )
-# text( your code here )
-# text( your code here )
-
+new_year.1944 = wr1500m[wr1500m$year == 1944, ]$new_year
+wr_1944 <- wr1500m[wr1500m$year == 1944, ]$times_sec
+abline(v = new_year.1944, col = "grey", lwd = 2)
+abline(v = new_year.1998, col = "grey", lwd = 2)
+text(new_year.1944, wr_1944 + 2, levels(droplevels(wr1500m[wr1500m$year == 1944, ]$athlete)), pos = 4, cex = 0.8, col = "grey")
+text(new_year.1998, wr_1998 + 2, levels(droplevels(wr1500m[wr1500m$year == 1998, ]$athlete)), pos = 4, cex = 0.8, col = "grey")
 
 # Q5. Now we are ready to add other contextual information.
 # Remake the plot as before but now adding axis labels and a title.
 # This is the FINAL version of the plot of world record times.
 
 # put your final version of the plotting commands below.
+
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l", xlim = c(1892, 2030),
+     main =  "World Record in Men's 1500m Race", xlab = "Year", ylab = "Times (sec)")
+lines(c(new_year.1998, 2014.5), c(wr_1998, wr_1998))
+abline(v = new_year.1944, col = "grey", lwd = 2)
+abline(v = new_year.1998, col = "grey", lwd = 2)
+text(new_year.1944, wr_1944 + 2, levels(droplevels(wr1500m[wr1500m$year == 1944, ]$athlete)), pos = 4, cex = 0.8, col = "grey")
+text(new_year.1998, wr_1998 + 2, levels(droplevels(wr1500m[wr1500m$year == 1998, ]$athlete)), pos = 4, cex = 0.8, col = "grey")
 
 ## You have finised the first plot!!
 
