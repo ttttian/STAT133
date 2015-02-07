@@ -254,6 +254,8 @@ SO2012Ctry.won_medals.lowest_gdppp <- SO2012Ctry.won_medals[SO2012Ctry.won_medal
 SO2012Ctry.won_medals.lowest_pop <- SO2012Ctry.won_medals[SO2012Ctry.won_medals$pop == min(SO2012Ctry.won_medals$pop), ]
 SO2012Ctry.no_medals.highest_gdppp <- SO2012Ctry.no_medals[SO2012Ctry.no_medals$GDP_per_person == max(SO2012Ctry.no_medals$GDP_per_person), ]
 SO2012Ctry.no_medals.highest_pop <- SO2012Ctry.no_medals[SO2012Ctry.no_medals$pop == max(SO2012Ctry.no_medals$pop), ]
+
+# top5 <- order()
 top5 <- list(SO2012Ctry.most_medals, SO2012Ctry.won_medals.lowest_gdppp, SO2012Ctry.won_medals.lowest_pop, SO2012Ctry.no_medals.highest_gdppp, SO2012Ctry.no_medals.highest_pop)
 
 # your plotting code here, including a new call to text()
@@ -265,21 +267,23 @@ for (country in top5) {
   text(country$GDP_per_person, country$pop, country$Country, cex = 0.8)
 }
 
+
 ######################################
 # PLOT 3.
 # Plotting points on maps can help us see geographic relationships
 #
-#Q10. Install the maps library and load it into your R session.
+# Q10. Install the maps library and load it into your R session.
 # Make a map of the world, using the function map(),
 # where the countries are filled with a light grey color.
 
-## you only need to run these two lines once:
-install.packages("maps")
+# you only need to run these two lines once:
+# install.packages("maps")
 library("maps")
 
-# world <- map( your code here )
+world <- map(fill = TRUE, col = "light grey")
 
-#Q11. Use the symbols() function to add circles to the map where
+
+# Q11. Use the symbols() function to add circles to the map where
 # the circles are proportional in area to the number of medals
 # won by the country. You may find the add parameter useful.
 # (Be sure to NOT plot circles for countries with 0 medals).
@@ -290,9 +294,9 @@ library("maps")
 # pull out the contries that won at least one medal (you will need at least
 # the contries longitude, latitude and Total.)
 
-# wonMedal <- your code here
-# world <- your code here
-# symbols( your code here )
+wonMedal <- SO2012Ctry[SO2012Ctry$Total > 0, ]
+world <- map(fill = TRUE, col = "light grey", xlim = c(-180, 180), ylim = c(-90, 90))
+symbols(wonMedal$longitude, wonMedal$latitude, circles = sqrt(wonMedal$Total), add = TRUE)
 
 
 #Q12. Remake the plot and fill in the circles with a partially
@@ -307,16 +311,16 @@ library("maps")
 # e.g. myColor = "#FEB24CAA" or   "#FEB24C88"
 
 # You only need to call these two lines once:
-install.packages("RColorBrewer")
+# install.packages("RColorBrewer")
 library("RColorBrewer")
 
-# display.brewer.all( your code here )
-# brewer.pal( your code here )
+display.brewer.all(select = TRUE)
+brewer.pal(9, "Oranges")
 
-# myGold <- your selected color
+myGold <- "#FD8D3C66"
 
-#world <- your code here
-#symbols( your code here )
+world <- map(fill = TRUE, col = "light grey", xlim = c(-180, 180), ylim = c(-90, 90))
+symbols(wonMedal$longitude, wonMedal$latitude, circles = sqrt(wonMedal$Total), add = TRUE, bg = myGold)
 
 
 ## That was the FINAL version of this plot
