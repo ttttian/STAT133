@@ -317,7 +317,7 @@ library("RColorBrewer")
 display.brewer.all(select = TRUE)
 brewer.pal(9, "Oranges")
 
-myGold <- "#FD8D3C66"
+myGold <- "#FEC44F66"
 
 world <- map(fill = TRUE, col = "light grey", xlim = c(-180, 180), ylim = c(-90, 90))
 symbols(wonMedal$longitude, wonMedal$latitude, circles = sqrt(wonMedal$Total), add = TRUE, bg = myGold)
@@ -335,15 +335,23 @@ symbols(wonMedal$longitude, wonMedal$latitude, circles = sqrt(wonMedal$Total), a
 # and contains information about every athlete who competed
 # in the Olympics.
 
-# load( )
+load("London2012ALL_ATHLETES.rda")
 
 # There is one observation for each athlete.
 # (Actually, about 20 athletes have two records if they
 # competed in different sporting events. Let's not worry about that.)
 
-#Q13. We are interested in the relationship between Sport and Sex.
+# Q13. We are interested in the relationship between Sport and Sex.
 # Examine the data frame and check which type of data each variable is.
+
 names(athletes)
+
+typeof(athletes$Name)
+typeof(athletes$Sex)
+typeof(athletes$Sport)
+typeof(athletes$Country)
+typeof(athletes$MoreThan1Sport)
+
 ### Name : nominal
 ### Sex : nominal
 ### Sport : nominal
@@ -354,47 +362,49 @@ names(athletes)
 # some of the questions below.
 
 # How many athletes competed in the 2012 Olympics?
-# n.athletes <- your code here
+n.athletes <- nrow(athletes)
 
 # How many women competed?
+n.women <- nrow(athletes[athletes$Sex == "F", ])
 
 # What proportion of the participants were women?
-# frac.women <- your code here
+frac.women <- n.women / n.athletes
 
 # How many sports were there?
-# n.sports <- your code here
+n.sports <- length(levels(athletes$Sport))
 
 
-#Q14. Make a barplot of Sport and Sex that emphasizes the
+# Q14. Make a barplot of Sport and Sex that emphasizes the
 # important differences. To do this, first make a table of
 # Sex by Sport. This will be the input to barplot().
 # Make the barplot with the parameter beside = TRUE and
 # and again with beside = FALSE. Determine which of these
 # barplots provides the easiest comparison.
 
-# athTab <- your code here
+athTab <- table(athletes$Sex, athletes$Sport)
 # make two barplots
-
+barplot(athTab)
+barplot(athTab, beside = TRUE)
 
 # what should beside be set to, T/F?
-# set.beside <- your answer
+set.beside <- TRUE
 
 ### Barplot with beside = TRUE provides the easiest comparison.
 
-#Q15. Remake the barplot above, but this time switch the order
+# Q15. Remake the barplot above, but this time switch the order
 # of Sport and Sex in the call to table(). Use the value for
 # the beside parameter that you decided was best for the
 # plot in Q 14.
 
-# athTab2 <- table()
+athTab2 <- table(athletes$Sport, athletes$Sex)
 # make barplot
-
+barplot(athTab2, beside = set.beside)
 
 # Compare the barplot with (Sex, Sport) vs (Sport, Sex).
 # Which makes a more interesting visual comparison, plot 1 or 2?
 # store your answer (1 or 2) in best.plot.
 
-# best.plot <- your answer
+best.plot <- 1
 
 
 # Q16. Notice that the bars are in alphabetical order by sport.
@@ -407,17 +417,19 @@ names(athletes)
 # the rows/cols. The resulting barplot should show bars in
 # increasing height.
 
-# orderSport <- your code here
-# barplot( your code here )
+orderSport <- order(table(athletes$Sport))
+barplot(athTab[, orderSport], beside = set.beside)
 
 
-# Q17. Finally to make the plot more informaation rich, try turning
+# Q17. Finally to make the plot more information rich, try turning
 # the x-axis labels on their side. To do this, find a parameter
 # in par() that will rotate the x-axis tick mark labels. Even though
 # you found the parameter in the par() function, this
 # parameter can be added in the call to barplot().
 # Also find and use a parameter to shrink the text for these labels.
 # Lastly, add a title to the plot.
+
+barplot(athTab[, orderSport], beside = set.beside, las = 2, cex.names = 0.8, main = "Relationship about Spoty and Sex")
 
 
 # This was the final version of the 4th plot.
