@@ -222,8 +222,9 @@ plot(SO2012Ctry$GDP, SO2012Ctry$pop)
 
 GDP_per_person <- SO2012Ctry$GDP / SO2012Ctry$pop
 SO2012Ctry <- data.frame(SO2012Ctry, GDP_per_person = GDP_per_person)
-plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy")
-symbols(SO2012Ctry$GDP_per_person, SO2012Ctry$pop, circles = sqrt(SO2012Ctry$Total), add = TRUE)
+# plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy")
+# symbols(SO2012Ctry$GDP_per_person, SO2012Ctry$pop, circles = sqrt(SO2012Ctry$Total), add = TRUE)
+symbols(log(SO2012Ctry$GDP_per_person), log(SO2012Ctry$pop), circles = sqrt(SO2012Ctry$Total))
 
 
 # Q8. It appears that the countries with no medals are circles too.
@@ -234,10 +235,11 @@ symbols(SO2012Ctry$GDP_per_person, SO2012Ctry$pop, circles = sqrt(SO2012Ctry$Tot
 
 SO2012Ctry.won_medals <- SO2012Ctry[SO2012Ctry$Total > 0, ]
 SO2012Ctry.no_medals <- SO2012Ctry[SO2012Ctry$Total == 0, ]
-plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy")
-symbols(SO2012Ctry.won_medals$GDP_per_person, SO2012Ctry.won_medals$pop, circles = sqrt(SO2012Ctry.won_medals$Total), add = TRUE)
-points(SO2012Ctry.no_medals$GDP_per_person, SO2012Ctry.no_medals$pop, pch = 20, cex = 0.5)
-
+# plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy")
+# symbols(SO2012Ctry.won_medals$GDP_per_person, SO2012Ctry.won_medals$pop, circles = sqrt(SO2012Ctry.won_medals$Total), add = TRUE)
+# points(SO2012Ctry.no_medals$GDP_per_person, SO2012Ctry.no_medals$pop, pch = 20, cex = 0.5)
+symbols(log(SO2012Ctry.won_medals$GDP_per_person), log(SO2012Ctry.won_medals$pop), circles = sqrt(SO2012Ctry.won_medals$Total))
+points(log(SO2012Ctry.no_medals$GDP_per_person), log(SO2012Ctry.no_medals$pop), pch = 20, cex = 0.5)
 
 # Q9. Make the plot information rich by adding axis labels,
 # title, and label 5 of the more interesting points
@@ -260,11 +262,13 @@ top5 <- list(SO2012Ctry.most_medals, SO2012Ctry.won_medals.lowest_gdppp, SO2012C
 
 # your plotting code here, including a new call to text()
 
-plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy", main = "Relationship between GDPPP, Population and Olympic Medals of Countries", xlab = "GDPPP", ylab = "Population")
-symbols(SO2012Ctry.won_medals$GDP_per_person, SO2012Ctry.won_medals$pop, circles = sqrt(SO2012Ctry.won_medals$Total), add = TRUE)
-points(SO2012Ctry.no_medals$GDP_per_person, SO2012Ctry.no_medals$pop, pch = 20, cex = 0.5)
+# plot(NA, NA, xlim = c(1e2, max(SO2012Ctry$GDP_per_person)), ylim = c(1e2, max(SO2012Ctry$pop)), log = "xy", main = "Relationship between GDPPP, Population and Olympic Medals of Countries", xlab = "GDPPP", ylab = "Population")
+# symbols(SO2012Ctry.won_medals$GDP_per_person, SO2012Ctry.won_medals$pop, circles = sqrt(SO2012Ctry.won_medals$Total), add = TRUE)
+# points(SO2012Ctry.no_medals$GDP_per_person, SO2012Ctry.no_medals$pop, pch = 20, cex = 0.5)
+symbols(log(SO2012Ctry.won_medals$GDP_per_person), log(SO2012Ctry.won_medals$pop), circles = sqrt(SO2012Ctry.won_medals$Total), main = "Relationship between GDPPP, Population and Olympic Medals of Countries", xlab = "GDPPP (log)", ylab = "Population (log)")
+points(log(SO2012Ctry.no_medals$GDP_per_person), log(SO2012Ctry.no_medals$pop), pch = 20, cex = 0.5)
 for (country in top5) {
-  text(country$GDP_per_person, country$pop, country$Country, cex = 0.8)
+  text(log(country$GDP_per_person), log(country$pop), country$Country, cex = 0.8)
 }
 
 
