@@ -256,16 +256,17 @@ SO2012Ctry.won_medals.lowest_pop <- SO2012Ctry.won_medals[SO2012Ctry.won_medals$
 SO2012Ctry.no_medals.highest_gdppp <- SO2012Ctry.no_medals[SO2012Ctry.no_medals$GDP_per_person == max(SO2012Ctry.no_medals$GDP_per_person), ]
 SO2012Ctry.no_medals.highest_pop <- SO2012Ctry.no_medals[SO2012Ctry.no_medals$pop == max(SO2012Ctry.no_medals$pop), ]
 
+top5 <- list(SO2012Ctry.most_medals, SO2012Ctry.won_medals.lowest_gdppp, SO2012Ctry.won_medals.lowest_pop, SO2012Ctry.no_medals.highest_gdppp, SO2012Ctry.no_medals.highest_pop)
+
 # Your ggplot command:
-ggplot(SO2012Ctry, aes(GDP_per_person, pop)) +
-  geom_point(aes(size = sqrt(SO2012Ctry$Total))) +
-  coord_trans(x = "log10", y = "log10") +
-  labs(title = "Relationship between GDPPP, Population and Olympic Medals of Countries", x = "GDPPP (log)", y = "Population (log)") +
-  annotate("text", SO2012Ctry.most_medals$GDP_per_person, SO2012Ctry.most_medals$pop, label = SO2012Ctry.most_medals$Country) +
-  annotate("text", SO2012Ctry.won_medals.lowest_gdppp$GDP_per_person, SO2012Ctry.won_medals.lowest_gdppp$pop, label = SO2012Ctry.won_medals.lowest_gdppp$Country) + 
-  annotate("text", SO2012Ctry.won_medals.lowest_pop$GDP_per_person, SO2012Ctry.won_medals.lowest_pop$pop, label = SO2012Ctry.won_medals.lowest_pop$Country) +
-  annotate("text", SO2012Ctry.no_medals.highest_gdppp$GDP_per_person, SO2012Ctry.no_medals.highest_gdppp$pop, label = SO2012Ctry.no_medals.highest_gdppp$Country) +
-  annotate("text", SO2012Ctry.no_medals.highest_pop$GDP_per_person, SO2012Ctry.no_medals.highest_pop$pop, label = SO2012Ctry.no_medals.highest_pop$Country)
+gg <- ggplot(SO2012Ctry, aes(GDP_per_person, pop)) +
+        geom_point(aes(size = sqrt(SO2012Ctry$Total))) +
+        coord_trans(x = "log10", y = "log10") +
+        labs(title = "Relationship between GDPPP, Population and Olympic Medals of Countries", x = "GDPPP (log)", y = "Population (log)")
+for (country in top5) {
+  gg <- gg + annotate("text", country$GDP_per_person, country$pop, label = country$Country)
+}
+gg
   
 
 ######################################
