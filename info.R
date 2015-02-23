@@ -1,0 +1,5 @@
+name = "Lingtian Cheng"
+SID = "24338944"
+email = "lingtian.cheng@gmail.com"
+github_name = "ttttian"
+status = "enrolled"
