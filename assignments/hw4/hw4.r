@@ -14,10 +14,11 @@
 #   element of <data.list>
 
 listLengths <- function(data.list) {
-
-    # your code here
-
+  element.lengths <- sapply(data.list, length)
+  return(element.lengths)
 }
+
+elements.lengths <- listLengths(data.list)
 
 #### Function 2
 #### Implement the function "powers"
@@ -30,11 +31,15 @@ listLengths <- function(data.list) {
 # <x.powers> : A matrix of size [n x k] where the first column is x, the second column x^2, the third column x^4, etc.
 #              the column names should be : "x", "x^2", "x^3" etc.
 
-powers <- function(x, k){
-
+powers <- function(x, k) {
+  x.powers <- sapply(1:k, function(p) x^p)
+  colnames(x.powers) <- c("x", paste("x^", 2:k, sep=""))
+  return(x.powers)
 }
 
- 
+x.powers <- powers(x, k)
+
+
 #### Function #3
 #### Implement the function "recipeConversion"
 
