@@ -13,12 +13,15 @@
 # <element.lengths>: a numeric vector whose entries are the lengths of each
 #   element of <data.list>
 
+# data.list <- list(c(1), c(1, 2), c(1, 2, 3))
+
 listLengths <- function(data.list) {
   element.lengths <- sapply(data.list, length)
   return(element.lengths)
 }
 
-elements.lengths <- listLengths(data.list)
+element.lengths <- listLengths(data.list)
+
 
 #### Function 2
 #### Implement the function "powers"
@@ -30,6 +33,9 @@ elements.lengths <- listLengths(data.list)
 # Output variable
 # <x.powers> : A matrix of size [n x k] where the first column is x, the second column x^2, the third column x^4, etc.
 #              the column names should be : "x", "x^2", "x^3" etc.
+
+# x <- c(1, 2, 3)
+# k <- 3
 
 powers <- function(x, k) {
   x.powers <- sapply(1:k, function(p) x^p)
@@ -68,10 +74,28 @@ x.powers <- powers(x, k)
 # function should stop and print out an error message
 
 # Put your code here
-recipeConversion <- function(recipe){
 
+amount <- c(1, 2, 3)
+unit <- c("cup", "cups", "oz")
+ingredient <- c("water", "milk", "flour")
+recipe <- data.frame(amount, unit, ingredient)
+
+recipeConversion <- function(recipe){
+  cup.to.ml <- 236.6
+  oz.to.gr <- 28.3
+  
+  recipe[match(c("cup", "cups"), recipe$unit), ]$amount <-
+    recipe[match(c("cup", "cups"), recipe$unit), ]$amount * cup.to.ml
+  recipe[match("oz", recipe$unit), ]$amount <-
+    recipe[match("oz", recipe$unit), ]$amount * oz.to.gr
+  
+  recipe$unit <- sub("cups?", "ml", recipe$unit)
+  recipe$unit <- sub("oz", "gr", recipe$unit)
+  
+  return(recipe)
 }
 
+recipe.metric <- recipeConversion(recipe)
 
 #### Function #4a
 # Implement the function "bootstrapVarEst"
