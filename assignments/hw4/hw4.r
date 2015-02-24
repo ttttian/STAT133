@@ -176,11 +176,13 @@ jack.sigma2.est <- jackknifeVarEst(x)
 
 # Note: this function calls the previous two functions.
 
-samplingVarEst <- function(x, type){
-   if (type == "jackknife") {
+samplingVarEst <- function(x, B=1000, type="bootstrap") {
+  if (type == "bootstrap") {
+    return(bootstrapVarEst(x, B))
+  } else if (type == "jackknife") {
     return(jackknifeVarEst(x))
   } else {
-    return(bootstrapVarEst(x, 5000))
+    stop("No such sampling method found")
   }
 }
 
