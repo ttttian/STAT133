@@ -80,7 +80,11 @@ unit <- c("cup", "cups", "oz")
 ingredient <- c("water", "milk", "flour")
 recipe <- data.frame(amount, unit, ingredient)
 
-recipeConversion <- function(recipe){
+recipeConversion <- function(recipe) {
+  if (any(colnames(recipe) != c("amount", "unit", "ingredient"))) {
+    stop('The column names of the input data frame must be "amount", "unit" and "ingredient".')
+  }
+  
   cup.to.ml <- 236.6
   oz.to.gr <- 28.3
   
@@ -118,9 +122,17 @@ recipe.metric <- recipeConversion(recipe)
 # -- Calculate, and store, the mean of this bootstrap sample, call that mu_i (i in 1:B)
 # -- The bootstrap variance is the sample variance of mu_1, mu_2, ..., mu_B
 
-bootstrapVarEst <- function(x, B){
-
+bootstrapVarEst <- function(x, B) {
+  x.sample.mean = c()
+  for (i in 1:B) {
+    x.sample <- sample(x, size=length(x), replace=TRUE)
+    x.sample.mean[i] <- mean(x.sample)
+  }
+  return(var(x.sample.mean))
 }
+
+boot.sigma2.est <- bootstrapVarEst(x, B)
+
 
 #### Function #4b
 #### Implement the function "jackknifeVarEst"
@@ -140,9 +152,17 @@ bootstrapVarEst <- function(x, B){
 #     for this reduced sample calculate the sample mean (get mu_1, mu_2, ..., mu_n)
 # -- The jackknife variance is the sample variance of mu_1, mu_2, ..., mu_n
 
-jackknifeVarEst <- fuction(x){
-
+jackknifeVarEst <- function(x) {
+  x.sample.mean <- c()
+  for (i in 1:length(x)) {
+    x.sample <- x[x != x[i]]
+    x.sample.mean[i] <- mean(x.sample)
+  }
+  return(var(x.sample.mean))
 }
+
+jack.sigma2.est <- jackknifeVarEst(x)
+
 
 #### Function #4c
 #### Implement the function "samplingVarEst"
@@ -156,8 +176,13 @@ jackknifeVarEst <- fuction(x){
 
 # Note: this function calls the previous two functions.
 
-samplingVarEst <- function(  ){
-
+samplingVarEst <- function(x, type){
+   if (type == "jackknife") {
+    return(jackknifeVarEst(x))
+  } else {
+    return(bootstrapVarEst(x, 5000))
+  }
 }
 
+sampling.sigma.est <- samplingVarEst(x, type)
 
