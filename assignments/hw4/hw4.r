@@ -75,10 +75,10 @@ x.powers <- powers(x, k)
 
 # Put your code here
 
-amount <- c(1, 2, 3)
-unit <- c("cup", "cups", "oz")
-ingredient <- c("water", "milk", "flour")
-recipe <- data.frame(amount, unit, ingredient)
+# amount <- c(1, 2, 3)
+# unit <- c("cup", "cups", "oz")
+# ingredient <- c("water", "milk", "flour")
+# recipe <- data.frame(amount, unit, ingredient)
 
 recipeConversion <- function(recipe) {
   if (any(colnames(recipe) != c("amount", "unit", "ingredient"))) {
