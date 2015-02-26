@@ -155,7 +155,7 @@ boot.sigma2.est <- bootstrapVarEst(x, B)
 jackknifeVarEst <- function(x) {
   x.sample.mean <- c()
   for (i in 1:length(x)) {
-    x.sample <- x[x != x[i]]
+    x.sample <- x[-i]
     x.sample.mean[i] <- mean(x.sample)
   }
   return(var(x.sample.mean))
