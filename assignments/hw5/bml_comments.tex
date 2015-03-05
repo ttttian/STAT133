@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[shortlabels]{enumitem}
+\usepackage{mathtools, amssymb}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Statistics 133 -- Homework 5}
+\author{Lingtian Cheng, SID 24338944}
+\maketitle
+
+\begin{enumerate}[1.]
+\item
+For $p = 0.2$, I find free flowing traffic after 1000 iterations on a $100 \times 100$ grid.
+\begin{figure}[hb]
+\centering
+\includegraphics[width=300px]{{bml_0.2}.png}
+\caption{p=0.2, r=100, c=100}
+\end{figure}
+
+\newpage
+
+For $p = 0.3$, I find a mixture of jams and free flowing traffic on a $100 \times 100$ grid.
+\begin{figure}[hb]
+\centering
+\includegraphics[width=300px]{{bml_0.3}.png}
+\caption{p=0.3, r=100, c=100}
+\end{figure}
+
+\newpage
+
+For $p = 0.4$, I find traffic jams after around 160 iterations on a $100 \times 100$ grid. \\
+For $p = 0.6$, I find traffic jams after around 40 iterations on a $100 \times 100$ grid. \\
+For $p = 0.8$, I find traffic jams after around 20 iterations on a $100 \times 100$ grid.
+\begin{figure}[hb]
+\centering
+\includegraphics[width=300px]{{bml_0.6}.png}
+\caption{p=0.6, r=100, c=100}
+\end{figure}
+
+\newpage
+
+\item
+The values in the table is the number of steps it has taken until it hits gridlock.
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+& Run 1 & Run 2 & Run 3 & Run 4 & Run 5 & Run 6 \\
+\hline
+p=0.2 & 1000 & 1000 & 1000 & 1000 & 1000 & 1000 \\
+\hline
+p=0.3 & 354 & 1000 & 430 & 371 & 555 & 423 \\
+\hline
+p=0.4 & 198 & 134 & 205 & 107 & 193 & 205 \\
+\hline
+p=0.6 & 41 & 39 & 50 & 35 & 46 & 45 \\
+\hline
+p=0.8 & 29 & 17 & 24 & 16 & 18 & 23 \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+\item
+For $p = 0.3$, the probability of gridlock increases as I increase the dimension of the grid from $50 \times 50$ to $200 \times 200$. Therefore, the transition depends on the size of the grid. \\
+Also, the probability of gridlock increase as I stretch the dimension of the grid from $100 \times 100$ to $1000 \times 10$. Therefore, the transition depends on the shape of the grid.
+\begin{figure}[hb]
+\centering
+\includegraphics[width=300px]{{bml_0.3_50_50}.png}
+\caption{p=0.3, r=50, c=50}
+\end{figure}
+\begin{figure}[hb]
+\centering
+\includegraphics[width=300px]{{bml_0.3_200_200}.png}
+\caption{p=0.3, r=200, c=200}
+\end{figure}
+
+\end{enumerate}
+
+\end{document}

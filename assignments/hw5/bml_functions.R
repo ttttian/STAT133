@@ -80,23 +80,25 @@ bml.step <- function(m) {
 
 #### Function to do a simulation for a given set of input parameters
 ## Input : size of grid [r and c] and density [p]
-## Output : [i] : number of steps taken
-##          [gridlock] : TRUE if hit gridlock, FALSE otherwise
+## Output : [num.steps] : number of steps taken to hit gridlock
 
-bml.sim <- function(r, c, p){
-  run <- 1000
+bml.sim <- function(r, c, p) {
+  n <- 1000
   m <- bml.init(r, c, p)
-  image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
   
-  for (i in 1:run) {
+  # image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
+  for (num.steps in 1:n) {
     m.next <- bml.step(m)
     if (m.next[[2]]) {
       m <- m.next[[1]]
-      image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
+      # image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
     } else {
-      return(list(i, TRUE))
+      image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
+      return(num.steps)
     }
   }
   
-  return(list(i, FALSE))
+  image(t(m[r:1,]), axes=FALSE, col=c("white", "red", "blue"))
+  return(num.steps)
 }
+
