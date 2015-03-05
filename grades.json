@@ -1,0 +1,23 @@
+{
+    "login": "ttttian", 
+    "url": "git@github.com:ttttian/stat133.git", 
+    "name": "Lingtian Cheng", 
+    "email": "lingtian.cheng@gmail.com", 
+    "github_name": "ttttian", 
+    "status": "enrolled", 
+    "grades": {
+        "hw1": {
+            "note": "", 
+            "hash": "2cc3fd254052af618cd1124f98a459477a0a1395", 
+            "earned": 20, 
+            "possible": 20, 
+            "penalty": 0, 
+            "parts": {
+                "hw1": {
+                    "possible": 20, 
+                    "earned": 20
+                }
+            }
+        }
+    }
+}
