@@ -48,6 +48,8 @@ bml.step <- function(m) {
           }
         }
       }
+    } else {
+      grid.new <- TRUE
     }
   }
   
@@ -72,6 +74,8 @@ bml.step <- function(m) {
           }
         }
       }
+    } else {
+      grid.new <- TRUE
     }
   }
   
