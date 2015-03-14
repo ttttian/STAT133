@@ -27,57 +27,79 @@ bml.step <- function(m) {
   c <- ncol(m)
   grid.new <- FALSE
 
-  for (i in 1:r) {
-    red.row <- m[i,] == 1
-    if (!all(red.row)) {
-      while (any(red.row)) {
-        red.col <- which(red.row, arr.ind=TRUE)
-        for (j in red.col) {
-          if (j == c) {
-            next.j <- 1
-          } else {
-            next.j <- j+1
-          }
-          if (m[i, next.j] == 0) {
-            m[i, j] <- 0
-            m[i, next.j] <- 1
-            grid.new <- TRUE
-            red.row[j] <- FALSE  # moved
-          } else if (m[i, next.j] == 2 || (m[i, next.j] == 1 && red.row[next.j] == FALSE)) {
-            red.row[j] <- FALSE  # blocked
-          }
-        }
-      }
-    } else {
-      grid.new <- TRUE
-    }
+#   for (i in 1:r) {
+#     red.row <- m[i,] == 1
+#     if (!all(red.row)) {
+#       while (any(red.row)) {
+#         red.col <- which(red.row, arr.ind=TRUE)
+#         for (j in red.col) {
+#           if (j == c) {
+#             next.j <- 1
+#           } else {
+#             next.j <- j+1
+#           }
+#           if (m[i, next.j] == 0) {
+#             m[i, j] <- 0
+#             m[i, next.j] <- 1
+#             grid.new <- TRUE
+#             red.row[j] <- FALSE  # moved
+#           } else if (m[i, next.j] == 2 || (m[i, next.j] == 1 && red.row[next.j] == FALSE)) {
+#             red.row[j] <- FALSE  # blocked
+#           }
+#         }
+#       }
+#     } else {
+#       grid.new <- TRUE
+#     }
+#   }
+#   
+#   for (j in 1:c) {
+#     blue.col <- m[,j] == 2
+#     if (!all(blue.col)) {
+#       while (any(blue.col)) {
+#         blue.row <- which(blue.col, arr.ind=TRUE)
+#         for (i in blue.row) {
+#           if (i == 1) {
+#             next.i <- r
+#           } else {
+#             next.i <- i-1
+#           }
+#           if (m[next.i, j] == 0) {
+#             m[i, j] <- 0
+#             m[next.i, j] <- 2
+#             grid.new <- TRUE
+#             blue.col[i] <- FALSE # moved
+#           } else if (m[next.i, j] == 1 || (m[next.i, j] == 2 && blue.col[next.i] == FALSE)) {
+#             blue.col[i] <- FALSE # blocked
+#           }
+#         }
+#       }
+#     } else {
+#       grid.new <- TRUE
+#     }
+#   }
+  
+  m.new <- m[,]
+
+  if (c > 1) {
+    red <- m.new * (m.new == 1)
+    not.red <- m.new * (m.new != 1)
+    blocked <- m.new[, c(2:c, 1)] != 0
+    red.blocked <- red * blocked
+    red.moved <- (red * !blocked)[, c(c, 1:c-1)]
+    m.new <- not.red + red.blocked + red.moved
+  }
+  if (r > 1) {
+    blue <- m.new * (m.new == 2)
+    not.blue <- m.new * (m.new != 2)
+    blocked <- m.new[c(r, 1:r-1), ] != 0
+    blue.blocked <- blue * blocked
+    blue.moved <- (blue * !blocked)[c(2:r, 1), ]
+    m.new <- not.blue + blue.blocked + blue.moved
   }
   
-  for (j in 1:c) {
-    blue.col <- m[,j] == 2
-    if (!all(blue.col)) {
-      while (any(blue.col)) {
-        blue.row <- which(blue.col, arr.ind=TRUE)
-        for (i in blue.row) {
-          if (i == 1) {
-            next.i <- r
-          } else {
-            next.i <- i-1
-          }
-          if (m[next.i, j] == 0) {
-            m[i, j] <- 0
-            m[next.i, j] <- 2
-            grid.new <- TRUE
-            blue.col[i] <- FALSE # moved
-          } else if (m[next.i, j] == 1 || (m[next.i, j] == 2 && blue.col[next.i] == FALSE)) {
-            blue.col[i] <- FALSE # blocked
-          }
-        }
-      }
-    } else {
-      grid.new <- TRUE
-    }
-  }
+  grid.new <- any(m != m.new)
+  m <- m.new
   
   return(list(m, grid.new))
 }
