@@ -31,14 +31,25 @@ sim.doctors <- function(initial.doctors, n.doctors, n.days, p){
 
   # Set up the output variable, define it as a matrix then use initial.doctors
   # to set the first column (day)
+  has_adopted <- matrix(NA, nrow=n.doctors, ncol=n.days)
+  has_adopted[, 1] <- initial.doctors
 
   # Run a simulation for <n.days> (use a for loop).  In the loop:
   # 1) pick two random doctors
   # 2) check if one has adopted the other hasn't
   # 3) convert the non-adopter with probability p
-
+  for (i in 2:n.days) {
+    sample.doctors <- sample(1:n.doctors, 2)
+    has_adopted[, i] <- has_adopted[, i-1]
+    if (has_adopted[sample.doctors, i] == c(0, 1) || has_adopted[sample.doctors, i] == c(1, 0)) {
+      if (runif(1) < p) {
+        has_adopted[sample.doctors, i] <- c(1, 1)
+      } 
+    }
+  }
+  
   # return the output
-
+  return(has_adopted)
 }
 
 # When you test your function you have to generate <initial.doctors> and
@@ -50,4 +61,17 @@ set.seed(42)
 # on x-axis: days,
 # on y-axis : the number of doctors that have already adopted the drug, on that day
 # Put all 5 lines in one figure (e.g. use first plot() then lines() for the subsequent lines)
-
+n.doctors <- 30
+n.days <- 30
+initial.doctors <- sapply(1:n.doctors, function(x) as.integer(runif(1) < 0.1))
+p.values <- seq(1, 0.2, by=-0.2)
+col.values <- c("red", "green", "purple", "blue", "orange")
+for (i in 1:length(p.values)) {
+  has_adopted <- sim.doctors(initial.doctors, n.doctors, n.days, p.values[i])
+  n.has_adopted <- apply(has_adopted, 2, sum)
+  if (i == 1) {
+    plot(1:n.days, n.has_adopted, type="l", col=col.values[i], xlab="Days", ylab="Number of Doctors have adopted the drug")
+  } else {
+    lines(1:n.days, n.has_adopted, col=col.values[i])
+  }
+}
