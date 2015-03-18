@@ -61,8 +61,8 @@ set.seed(42)
 # on x-axis: days,
 # on y-axis : the number of doctors that have already adopted the drug, on that day
 # Put all 5 lines in one figure (e.g. use first plot() then lines() for the subsequent lines)
-n.doctors <- 30
-n.days <- 30
+n.doctors <- 9
+n.days <- 60
 initial.doctors <- sapply(1:n.doctors, function(x) as.integer(runif(1) < 0.1))
 p.values <- seq(1, 0.2, by=-0.2)
 col.values <- c("red", "green", "purple", "blue", "orange")
@@ -75,3 +75,4 @@ for (i in 1:length(p.values)) {
     lines(1:n.days, n.has_adopted, col=col.values[i])
   }
 }
+
