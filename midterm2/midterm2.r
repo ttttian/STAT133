@@ -110,19 +110,13 @@ color <- rep(FALSE, nrow(iris))
 color[iris$Species=='setosa'] <- 'red'
 color[iris$Species=='versicolor'] <- 'blue'
 color[iris$Species=='virginica'] <- 'green'
-plot(iris$Sepal.Length, iris$Sepal.Width, xlab="Petal Length", ylab="Petal Width", col=color)
+plot(iris$Petal.Length, iris$Petal.Width, xlab="Petal Length", ylab="Petal Width", col=color)
 
 
 # [3 pt]
 # Make a scatterplot of ( sepal length / petal length) as a function of index (order)
 # Color the plotting symbol by Species (any 3 colors)
 
-df <- iris[order(iris$Sepal.Length/iris$Sepal.Width), ]
-color <- rep(FALSE, nrow(df))
-color[df$Species=='setosa'] <- 'red'
-color[df$Species=='versicolor'] <- 'blue'
-color[df$Species=='virginica'] <- 'green'
-plot(df$Sepal.Length, df$Sepal.Width, xlab="Petal Length", ylab="Petal Width", col=color)
 
 ##  apply statements
 
