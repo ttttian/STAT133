@@ -1,8 +1,10 @@
+library('ggplot2')
+
 xUnique = 1:5
 trueCoeff = c(0, 1, 1)
 
 getData = function(coefs = c(0, 1, 1), xs = 1:5, dupl = 10,
-                   sd = 5, seed=2222){
+                   sd = 5, seed=2222) {
   ### This function creates the artificial data
   set.seed(seed)
   x = rep(xs, each = dupl)
@@ -12,47 +14,61 @@ getData = function(coefs = c(0, 1, 1), xs = 1:5, dupl = 10,
 }
 
 ### 
-genBootY = function(x, y, rep = TRUE){
+genBootY = function(x, y, rep = TRUE) {
   ### For each unique x value, take a sample of the
   ### corresponding y values, with replacement.
   ### Return a vector of random y values the same length as y
   ### You can assume that the xs are sorted
   ### Hint use tapply here!
   
-
+  return(unname(unlist(tapply(y, x, function(i) sample(i, length(i), replace=TRUE)))))
 }
 
-genBootR = function(fit, err, rep = TRUE){
+genBootR = function(fit, err, rep = TRUE) {
   ### Sample the errors 
   ### Add the errors to the fit to create a y vector
   ### Return a vector of y values the same length as fit
   ### HINT: It can be easier to sample the indices than the values
   
- 
+  return(fit + sample(err, length(err), replace=FALSE))
 }
 
-fitModel = function(x, y, degree = 1){
+fitModel = function(x, y, degree = 1) {
   ### use the lm function to fit a line of a quadratic 
   ### e.g. y ~ x or y ~ x + I(x^2)
   ### y and x are numeric vectors of the same length
   ### Return the coefficients as a vector 
   ### HINT: Take a look at the repBoot function to see how to use lm()
   
- 
+  df <- data.frame(x=x, y=y)
+  if (degree == 1) {
+    model <- lm(y ~ x, data)
+  } else if (degree == 2) {
+    model <- lm(y ~ x + I(x^2), data)
+  } else {
+    stop("Wrong degree!")
+  }
+  coeff <- model$coefficients
   return(coeff)
 }
 
-oneBoot = function(data, fit = NULL, degree = 1){
+oneBoot = function(data, fit = NULL, degree = 1) {
   ###  data are either your data (from call to getData)
   ###  OR fit and errors from fit of line to data
   ###  OR fit and errors from fit of quadratic to data  
-
+  
+  if (is.null(fit)) {
+    data[,2] <- genBootY(data[,1], data[,2])
+  } else {
+    data[,1] <- fit[,1]
+    data[,2] <- genBootR(fit[,1], fit[,2])
+  }
  
   ### Use fitModel to fit a model to this bootstrap Y 
- 
+  return(fitModel(data[,1], data[,2], degree))
 }
 
-repBoot = function(data, B = 1000){
+repBoot = function(data, B = 1000) {
   
   ### Set up the inputs you need for oneBoot, i.e.,
   ### create errors and fits for line and quadratic
@@ -76,16 +92,33 @@ repBoot = function(data, B = 1000){
   ### fit is for a line or a quadratic
   ### Return this list
   
+  linear.case.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=NULL, degree=1)))
+  quadratic.case.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=NULL, degree=2)))
+  
+  linear.model <- lm(y ~ x, data)
+  linear.fits <- predict(linear.model, data)
+  linear.residuals <- linear.model$residuals
+  linear.residual.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=cbind(linear.fits, linear.residuals), degree=1)))
+  
+  quadratic.model <- lm(y ~ x + I(x^2), data)
+  quadratic.fits <- predict(quadratic.model, data)
+  quadratic.residuals <- quadratic.model$residuals
+  quadratic.residual.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=cbind(quadratic.fits, quadratic.residuals), degree=2)))
+  
+  coeff <- list(linear.case.resampling, quadratic.case.resampling, linear.residual.resampling, quadratic.residual.resampling)
+  
   return(coeff)
 } 
 
-bootPlot = function(x, y, coeff, trueCoeff){
+bootPlot = function(x, y, coeff, trueCoeff) {
   ### x and y are the original data
   ### coeff is a matrix from repBoot
   ### trueCoeff contains the true coefficients 
   ### that generated the data
   
   ### Make a scatter plot of data
+  gg <- ggplot(data.frame(x=x, y=y)) + geom_point(aes(x=x, y=y))
+  
 
   ### Add lines or curves for each row in coeff
   ### Use transparency
@@ -94,9 +127,11 @@ bootPlot = function(x, y, coeff, trueCoeff){
   ### Have a look at ?mapply for details.
   ### This can be done in ggplot2 or base graphics.
   
+  
   ### Use trueCoeff to add true line/curve - 
   ###  Make the true line/curve stand out
-
+  
+  return(gg)
 }
 
 ### Run your simulation by calling this function
