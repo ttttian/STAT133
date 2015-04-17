@@ -91,7 +91,7 @@ mostCommonLetter <- function(chvec) {
     if (length(matches) > max) {
       letter <- ch
       max <- length(matches)
-    } else if (length(matches) == max) {
+    } else if (matches[1] != -1 && length(matches) == max) {
       letter <- c(letter, ch)
     }
   }
