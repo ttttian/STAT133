@@ -9,6 +9,11 @@
 #   <num.star>: an integer indicating how many elements of <chvec> contain the "*"
 #     symbol. For example: numStarElements(c('star', 'st*r', '***')) should return 2
 
+numStarElements <- function(chvec) {
+  num.star <- length(grep('\\*', chvec))
+  return(num.star)
+}
+
 
 
 # Write a function called numDigits that counts the number of (single) digits in
@@ -19,6 +24,15 @@
 # and return the following
 #   <total>: A single number (the number of digits in chvec)
 
+numDigits <- function(chvec) {
+  matches <- gregexpr('\\d', chvec)[[1]]
+  if (matches[1] == -1) {
+    total <- 0
+  } else {
+    total <- length(matches)
+  }
+  return(total)
+}
 
 
 # Some test cases:
@@ -37,10 +51,19 @@
 # and return
 #   <theirchvec>: The same character vector with the required substitutions.
 
+
+hisToTheir <- function(chvec) {
+  theirchvec <- gsub('\\<him\\>', 'them', chvec)
+  theirchvec <- gsub('\\<he\\>', 'they', theirchvec)
+  theirchvec <- gsub('\\<his\\>', 'their', theirchvec)
+  return(theirchvec)
+}
+
+
 #A test case
 all.equal(
   hisToTheir("he went to the store his mother gave him"), 
-  "she went to the store her mother gave her"
+  "they went to the store their mother gave them"
 )
 
 
@@ -57,3 +80,20 @@ all.equal(
 #  <letter> The most common letter or letters in the string.
 # For example mostCommonLetter("aabbccccdddd") should return 
 # [1] "c" "d"
+
+mostCommonLetter <- function(chvec) {
+  chvec <- gsub('[^[:alpha:]]', '', chvec)
+  chvec <- tolower(chvec)
+  letter <- c()
+  max <- 1
+  for (ch in letters) {
+    matches <- gregexpr(ch, chvec)[[1]]
+    if (length(matches) > max) {
+      letter <- ch
+      max <- length(matches)
+    } else if (length(matches) == max) {
+      letter <- c(letter, ch)
+    }
+  }
+  return(letter)
+}
