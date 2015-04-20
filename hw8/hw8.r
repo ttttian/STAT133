@@ -1,4 +1,4 @@
-library('ggplot2')
+library('scales')
 
 xUnique = 1:5
 trueCoeff = c(0, 1, 1)
@@ -42,13 +42,13 @@ fitModel = function(x, y, degree = 1) {
   
   df <- data.frame(x=x, y=y)
   if (degree == 1) {
-    model <- lm(y ~ x, data)
+    model <- lm(y ~ x, df)
   } else if (degree == 2) {
-    model <- lm(y ~ x + I(x^2), data)
+    model <- lm(y ~ x + I(x^2), df)
   } else {
     stop("Wrong degree!")
   }
-  coeff <- model$coefficients
+  coeff <- coef(model)
   return(coeff)
 }
 
@@ -60,7 +60,6 @@ oneBoot = function(data, fit = NULL, degree = 1) {
   if (is.null(fit)) {
     data[,2] <- genBootY(data[,1], data[,2])
   } else {
-    data[,1] <- fit[,1]
     data[,2] <- genBootR(fit[,1], fit[,2])
   }
  
@@ -92,18 +91,18 @@ repBoot = function(data, B = 1000) {
   ### fit is for a line or a quadratic
   ### Return this list
   
-  linear.case.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=NULL, degree=1)))
-  quadratic.case.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=NULL, degree=2)))
+  linear.case.resampling <- t(sapply(lapply(1:B, function(x) oneBoot(as.matrix(data), fit=NULL, degree=1)), unlist))
+  quadratic.case.resampling <- t(sapply(lapply(1:B, function(x) oneBoot(as.matrix(data), fit=NULL, degree=2)), unlist))
   
   linear.model <- lm(y ~ x, data)
   linear.fits <- predict(linear.model, data)
-  linear.residuals <- linear.model$residuals
-  linear.residual.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=cbind(linear.fits, linear.residuals), degree=1)))
+  linear.residuals <- residuals(linear.model)
+  linear.residual.resampling <- t(sapply(lapply(1:B, function(x) oneBoot(as.matrix(data), fit=cbind(linear.fits, linear.residuals), degree=1)), unlist))
   
   quadratic.model <- lm(y ~ x + I(x^2), data)
   quadratic.fits <- predict(quadratic.model, data)
-  quadratic.residuals <- quadratic.model$residuals
-  quadratic.residual.resampling <- data.frame(lapply(1:B, function(x) oneBoot(data, fit=cbind(quadratic.fits, quadratic.residuals), degree=2)))
+  quadratic.residuals <- residuals(quadratic.model)
+  quadratic.residual.resampling <- t(sapply(lapply(1:B, function(x) oneBoot(as.matrix(data), fit=cbind(quadratic.fits, quadratic.residuals), degree=2)), unlist))
   
   coeff <- list(linear.case.resampling, quadratic.case.resampling, linear.residual.resampling, quadratic.residual.resampling)
   
@@ -117,8 +116,7 @@ bootPlot = function(x, y, coeff, trueCoeff) {
   ### that generated the data
   
   ### Make a scatter plot of data
-  gg <- ggplot(data.frame(x=x, y=y)) + geom_point(aes(x=x, y=y))
-  
+  plot(x, y, pch=20)
 
   ### Add lines or curves for each row in coeff
   ### Use transparency
@@ -126,12 +124,22 @@ bootPlot = function(x, y, coeff, trueCoeff) {
   ### 1000 of the bootstrapped lines of best fit 
   ### Have a look at ?mapply for details.
   ### This can be done in ggplot2 or base graphics.
-  
+  color <- alpha('blue', 0.01)
+  if (ncol(coeff) == 2) {
+    mapply(function(a, b) abline(a, b, col=color), coeff[,1], coeff[,2])
+  } else {
+    mapply(function(a, b, c) curve(a + b*x + c*x^2, add=TRUE,  col=color), coeff[,1], coeff[,2], coeff[,3])
+  }
   
   ### Use trueCoeff to add true line/curve - 
   ###  Make the true line/curve stand out
-  
-  return(gg)
+  color <- 'blue'
+  width <- 5
+  if (length(trueCoeff) == 2) {
+    abline(trueCoeff[1], trueCoeff[2], col=color, lwd=width)
+  } else {
+    curve(trueCoeff[1] + trueCoeff[2]*x + trueCoeff[3]*x^2, add=TRUE, col=color, lwd=width)
+  }
 }
 
 ### Run your simulation by calling this function
