@@ -20,7 +20,7 @@ listLengths <- function(data.list) {
   return(element.lengths)
 }
 
-element.lengths <- listLengths(data.list)
+#element.lengths <- listLengths(data.list)
 
 
 #### Function 2
@@ -43,7 +43,7 @@ powers <- function(x, k) {
   return(x.powers)
 }
 
-x.powers <- powers(x, k)
+#x.powers <- powers(x, k)
 
 
 #### Function #3
@@ -99,7 +99,7 @@ recipeConversion <- function(recipe) {
   return(recipe)
 }
 
-recipe.metric <- recipeConversion(recipe)
+#recipe.metric <- recipeConversion(recipe)
 
 #### Function #4a
 # Implement the function "bootstrapVarEst"
@@ -131,7 +131,7 @@ bootstrapVarEst <- function(x, B) {
   return(var(x.sample.mean))
 }
 
-boot.sigma2.est <- bootstrapVarEst(x, B)
+#boot.sigma2.est <- bootstrapVarEst(x, B)
 
 
 #### Function #4b
@@ -161,7 +161,7 @@ jackknifeVarEst <- function(x) {
   return(var(x.sample.mean))
 }
 
-jack.sigma2.est <- jackknifeVarEst(x)
+#jack.sigma2.est <- jackknifeVarEst(x)
 
 
 #### Function #4c
@@ -176,7 +176,7 @@ jack.sigma2.est <- jackknifeVarEst(x)
 
 # Note: this function calls the previous two functions.
 
-samplingVarEst <- function(x, B=1000, type="bootstrap") {
+samplingVarEst <- function(x, type="bootstrap",B=1000) {
   if (type == "bootstrap") {
     return(bootstrapVarEst(x, B))
   } else if (type == "jackknife") {
@@ -186,5 +186,5 @@ samplingVarEst <- function(x, B=1000, type="bootstrap") {
   }
 }
 
-sampling.sigma.est <- samplingVarEst(x, type)
+#sampling.sigma.est <- samplingVarEst(x, type)
 
