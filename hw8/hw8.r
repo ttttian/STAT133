@@ -1,5 +1,3 @@
-library('scales')
-
 xUnique = 1:5
 trueCoeff = c(0, 1, 1)
 
@@ -124,7 +122,7 @@ bootPlot = function(x, y, coeff, trueCoeff) {
   ### 1000 of the bootstrapped lines of best fit 
   ### Have a look at ?mapply for details.
   ### This can be done in ggplot2 or base graphics.
-  color <- alpha('blue', 0.01)
+  color <- rgb(0, 0, 1, 0.01)
   if (ncol(coeff) == 2) {
     mapply(function(a, b) abline(a, b, col=color), coeff[,1], coeff[,2])
   } else {
@@ -133,7 +131,7 @@ bootPlot = function(x, y, coeff, trueCoeff) {
   
   ### Use trueCoeff to add true line/curve - 
   ###  Make the true line/curve stand out
-  color <- 'blue'
+  color <- rgb(0, 0, 1)
   width <- 5
   if (length(trueCoeff) == 2) {
     abline(trueCoeff[1], trueCoeff[2], col=color, lwd=width)
