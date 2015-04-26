@@ -1,0 +1,3 @@
+line 137: true curve should always be quadratic  -2
+
+Score: 18/20
