@@ -78,6 +78,6 @@ updateDate <- function(dates, old.yr) {
 # a vector of the same length with only the first [k] characters from the orignal vector entries.
 
 abbreviate <- function(vector, k){
-  return(sapply(vector, function(x) substr(x, 1, k)))
+  return(substr(vector, 1, k))
 }
 
