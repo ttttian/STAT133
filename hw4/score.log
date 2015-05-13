@@ -93,7 +93,7 @@ RRuntimeError: Error in all.equal(recipe.r, sol$recipe, check.attributes = F, to
 INFO:root:Executed R('bootstrapVarEst.r <- bootstrapVarEst(test$bootstrapVarEst.x, test$bootstrapVarEst.B)')
 INFO:root:(3 points) R('all.equal(bootstrapVarEst.r, sol$bootstrapVarEst, check.attributes=F, tolerance=1)')[0] is True
 INFO:root:Executed R('jackknifeVarEst.r <- jackknifeVarEst(test$jackknifeVarEst.x)')
-INFO:root:(3 points) R('all.equal(jackknifeVarEst.r, sol$jackknifeVarEst, check.attributes=F, tolerance=1e-1)')[0] is True
+INFO:root:(3 points) R('all.equal(jackknifeVarEst.r, sol$jackknifeVarEst, check.attributes=F, tolerance=1)')[0] is True
 INFO:root:Executed R('samplingVarEst.r <- samplingVarEst(test$samplingVarEst.x, test$samplingVarEst.type)')
-INFO:root:(3 points) R('all.equal(samplingVarEst.r, sol$samplingVarEst, check.attributes=F, tolerance=1e-1)')[0] is True
+INFO:root:(3 points) R('all.equal(samplingVarEst.r, sol$samplingVarEst, check.attributes=F, tolerance=1)')[0] is True
 INFO:root:You got a 17 out of 20.
