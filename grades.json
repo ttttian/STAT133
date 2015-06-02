@@ -31,6 +31,53 @@
                     "earned": 4
                 }
             }
+        }, 
+        "hw2": {
+            "note": "", 
+            "hash": "9423d4cde70e1b3c9c80f109604ddd7f70c749ab", 
+            "earned": 24, 
+            "possible": 31, 
+            "penalty": 0, 
+            "parts": {
+                "hw2_fig": {
+                    "possible": 20, 
+                    "earned": 17
+                }, 
+                "hw2": {
+                    "possible": 11, 
+                    "earned": 7
+                }
+            }
+        }, 
+        "midterm4": {
+            "note": "", 
+            "hash": "47119622674d7f616a70f48e07f44e8d7e7ddcc4", 
+            "earned": 30, 
+            "possible": 27, 
+            "penalty": 0, 
+            "parts": {
+                "midterm4": {
+                    "possible": 30, 
+                    "earned": 30
+                }
+            }
+        }, 
+        "final-feiw50hj": {
+            "note": "", 
+            "hash": "47640b92e0fb97baf344bd1287796aaf1ab90aca", 
+            "earned": 79, 
+            "possible": 100, 
+            "penalty": 0, 
+            "parts": {
+                "final": {
+                    "possible": 69, 
+                    "earned": 52
+                }, 
+                "final_fig": {
+                    "possible": 31, 
+                    "earned": 27
+                }
+            }
         }
     }, 
     "section": "lab2"

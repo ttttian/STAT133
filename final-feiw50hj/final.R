@@ -368,8 +368,8 @@ NumJackpot <- function(k, B) {
 # Plot a histogram of the output from NumJackpot (i.e. four histograms)
 
 par(mfrow=c(2, 2))
-B <- 5000
-for (k in c(10000, 50000, 100000, 500000)) {
+B <- 50 #andy
+for (k in c(100, 500, 1000, 5000)) {
   hist(NumJackpot(k, B))
 }
 par(mfrow=c(1, 1))
