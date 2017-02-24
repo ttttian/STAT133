@@ -1,1 +1,1 @@
-# STAT 133 Spring 2015
+# STAT 133 - Spring 2015
